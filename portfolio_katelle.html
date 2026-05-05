@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Katelle Allin — Data & Market Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0F1E3C;
+    --steel: #2A5FA5;
+    --sky: #4A90D9;
+    --frost: #EEF4FB;
+    --white: #FFFFFF;
+    --text: #1A1A2E;
+    --muted: #6B7B99;
+    --border: rgba(42,95,165,0.12);
+    --tag-bg: rgba(42,95,165,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--white); line-height: 1.6; overflow-x: hidden; }
+
+  /* LANG TOGGLE */
+  .lang-toggle {
+    position: fixed;
+    top: 24px; right: 32px;
+    z-index: 100;
+    display: flex;
+    gap: 0;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .lang-btn {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    cursor: pointer;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.45);
+    transition: all 0.15s;
+  }
+  .lang-btn.active {
+    background: rgba(255,255,255,0.18);
+    color: white;
+  }
+  .lang-btn:hover:not(.active) { color: rgba(255,255,255,0.7); }
+
+  /* When page is in light section, toggle turns dark */
+  body.light-nav .lang-toggle { border-color: rgba(42,95,165,0.2); }
+  body.light-nav .lang-btn { background: rgba(42,95,165,0.06); color: var(--muted); }
+  body.light-nav .lang-btn.active { background: var(--steel); color: white; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 64px;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; top: -30%; right: -10%;
+    width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(42,95,165,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-orbit {
+    position: absolute; border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 50%; top: 50%; right: 5%; transform: translateY(-50%);
+  }
+  .hero-orbit:nth-child(1) { width: 400px; height: 400px; margin-top: -200px; margin-right: -100px; }
+  .hero-orbit:nth-child(2) { width: 600px; height: 600px; margin-top: -300px; margin-right: -200px; }
+  .hero-orbit:nth-child(3) { width: 800px; height: 800px; margin-top: -400px; margin-right: -300px; }
+  .hero-dot {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky); top: 30%; right: 28%;
+    box-shadow: 0 0 12px rgba(74,144,217,0.6);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 680px; }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--sky); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--sky); }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    color: var(--white); line-height: 1.05; margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: rgba(255,255,255,0.45); }
+  .hero-desc { font-size: 16px; color: rgba(255,255,255,0.55); max-width: 520px; line-height: 1.8; margin-bottom: 48px; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 52px; }
+  .hero-tag {
+    font-size: 12px; color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.12); padding: 6px 14px;
+    border-radius: 20px; letter-spacing: 0.02em;
+  }
+  .hero-cta { display: flex; gap: 16px; align-items: center; }
+  .btn-primary {
+    background: var(--sky); color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; padding: 12px 28px; border-radius: 4px;
+    text-decoration: none; letter-spacing: 0.02em; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #3A7FC9; }
+  .btn-ghost { color: rgba(255,255,255,0.5); font-size: 13px; text-decoration: none; transition: color 0.2s; }
+  .btn-ghost:hover { color: white; }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 64px;
+    display: flex; align-items: center; gap: 12px;
+    color: rgba(255,255,255,0.25); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .scroll-line { width: 40px; height: 1px; background: rgba(255,255,255,0.2); }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 64px; }
+  section { padding: 100px 0; }
+  .section-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--steel); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--steel); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 3.5vw, 48px);
+    color: var(--navy); line-height: 1.1; margin-bottom: 60px;
+  }
+
+  /* PROJECTS */
+  .projects-bg { background: var(--frost); }
+  .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .project-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .project-card:hover { box-shadow: 0 12px 40px rgba(15,30,60,0.10); transform: translateY(-3px); }
+  .project-card.featured { grid-column: span 2; }
+  .project-screens {
+    background: var(--navy); padding: 32px 32px 0;
+    display: flex; gap: 12px; align-items: flex-end;
+    overflow: hidden; height: 280px;
+  }
+  .project-card.featured .project-screens { height: 320px; }
+  .screen {
+    border-radius: 8px 8px 0 0; overflow: hidden;
+    flex-shrink: 0; box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+  }
+  .screen img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .project-body { padding: 32px; }
+  .project-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .project-type { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel); }
+  .project-badge { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 20px; letter-spacing: 0.04em; }
+  .badge-live { background: #E6F4EC; color: #1A7A3C; }
+  .badge-hackathon { background: #FFF4E0; color: #A0610A; }
+  .project-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--navy); margin-bottom: 12px; line-height: 1.15; }
+  .project-desc { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 24px; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .stack-tag { font-size: 11px; font-weight: 500; background: var(--tag-bg); color: var(--steel); padding: 4px 12px; border-radius: 20px; }
+  .project-highlights {
+    border-top: 1px solid var(--border); padding-top: 20px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .highlight-value { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--navy); display: block; line-height: 1; margin-bottom: 4px; }
+  .highlight-label { font-size: 11px; color: var(--muted); }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; color: var(--steel); text-decoration: none;
+    margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
+    width: 100%; transition: color 0.15s;
+  }
+  .project-link:hover { color: var(--navy); }
+  .project-link .arrow { transition: transform 0.15s; }
+  .project-link:hover .arrow { transform: translateX(4px); }
+
+  /* POWER BI */
+  .pbi-intro { font-size: 15px; color: var(--muted); max-width: 600px; line-height: 1.8; margin-bottom: 56px; margin-top: -36px; }
+  .pbi-section { margin-bottom: 60px; }
+  .pbi-company-header {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pbi-company-name { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--navy); }
+  .pbi-company-role { font-size: 13px; color: var(--muted); }
+  .pbi-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .pbi-gallery.two-col { grid-template-columns: repeat(2, 1fr); }
+  .pbi-thumb {
+    border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .pbi-thumb:hover { box-shadow: 0 8px 24px rgba(15,30,60,0.12); transform: translateY(-2px); }
+  .pbi-thumb img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; object-position: top; }
+  .pbi-caption { font-size: 11px; color: var(--muted); padding: 8px 12px 10px; text-align: center; line-height: 1.4; border-top: 1px solid var(--border); background: var(--frost); }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(10,18,40,0.92); align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; box-shadow: 0 24px 80px rgba(0,0,0,0.5); }
+  .lightbox-close {
+    position: absolute; top: 24px; right: 32px;
+    color: rgba(255,255,255,0.6); font-size: 28px; cursor: pointer;
+    background: none; border: none; font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s;
+  }
+  .lightbox-close:hover { color: white; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .about-lead { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--navy); line-height: 1.5; margin-bottom: 24px; }
+  .about-body { font-size: 15px; color: var(--muted); line-height: 1.8; }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+  }
+  .stat-cell { background: var(--white); padding: 28px 24px; transition: background 0.15s; }
+  .stat-cell:hover { background: var(--frost); }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+  .stat-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* CONTACT */
+  .contact-bg { background: var(--navy); }
+  .contact-bg .section-label { color: var(--sky); }
+  .contact-bg .section-label::before { background: var(--sky); }
+  .contact-bg .section-title { color: var(--white); }
+  .contact-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: -20px; }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
+    text-decoration: none; padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .contact-link:hover { color: white; border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.05); }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy); border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 28px 64px; display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 12px; color: rgba(255,255,255,0.2); letter-spacing: 0.04em; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-content > * { animation: fadeUp 0.7s ease both; }
+  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 60px 32px; }
+    .container { padding: 0 32px; }
+    .project-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; }
+    .project-highlights { grid-template-columns: repeat(2,1fr); }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pbi-gallery { grid-template-columns: repeat(2,1fr); }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 32px; }
+    .lang-toggle { top: 16px; right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANG TOGGLE -->
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orbit"></div>
+  <div class="hero-orbit"></div>
+  <div class="hero-orbit"></div>
+  <div class="hero-dot"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow" data-en="Data & Market Analyst Portfolio" data-fr="Portfolio Data & Market Analyst">Data & Market Analyst Portfolio</p>
+    <h1>Katelle<br><em>Allin</em></h1>
+    <p class="hero-desc" data-en="Bilingual analyst at the intersection of data, strategy and AI — with a focus on the space sector. I build tools that turn complex data into decisions." data-fr="Analyste bilingue à l'intersection des données, de la stratégie et de l'IA — avec une spécialisation dans le secteur spatial. Je construis des outils qui transforment des données complexes en décisions.">Bilingual analyst at the intersection of data, strategy and AI — with a focus on the space sector. I build tools that turn complex data into decisions.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">Power BI</span>
+      <span class="hero-tag">Python</span>
+      <span class="hero-tag">AI / LLMs</span>
+      <span class="hero-tag" data-en="Market Intelligence" data-fr="Intelligence de Marché">Market Intelligence</span>
+      <span class="hero-tag" data-en="Space Industry" data-fr="Secteur Spatial">Space Industry</span>
+      <span class="hero-tag" data-en="Survey Design" data-fr="Conception d'Enquêtes">Survey Design</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary" data-en="View projects" data-fr="Voir les projets">View projects</a>
+      <a href="https://www.linkedin.com/in/katelle-allin" target="_blank" class="btn-ghost">LinkedIn →</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span data-en="Scroll" data-fr="Défiler">Scroll</span>
+  </div>
+</section>
+
+
+<!-- PROJECTS -->
+<section class="projects-bg" id="projects">
+  <div class="container">
+    <p class="section-label" data-en="Selected projects" data-fr="Projets sélectionnés">Selected projects</p>
+    <h2 class="section-title" data-en="AI tools<br>built from scratch" data-fr="Outils IA<br>construits from scratch">AI tools<br>built from scratch</h2>
+
+    <div class="project-grid">
+
+      <!-- NUBIAS -->
+      <div class="project-card featured">
+        <div class="project-screens">
+          <div class="screen" style="width:52%;height:240px;">
+            <img src="images/Nubias/Capture d'écran 2026-04-02 183536.png" alt="Nubias homepage">
+          </div>
+          <div class="screen" style="width:26%;height:210px;">
+            <img src="images/Nubias/Capture d'écran 2026-04-02 183816.png" alt="Nubias bias analysis">
+          </div>
+          <div class="screen" style="width:26%;height:185px;">
+            <img src="images/Nubias/Capture d'écran 2026-04-02 183848.png" alt="Nubias modules">
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-type" data-en="Web application" data-fr="Application web">Web application</span>
+            <span class="project-badge badge-live" data-en="Live demo" data-fr="Démo en ligne">Live demo</span>
+          </div>
+          <h3 class="project-title" data-en="Nubias — Gender bias detection in hiring" data-fr="Nubias — Détection des biais de genre dans le recrutement">Nubias — Gender bias detection in hiring</h3>
+          <p class="project-desc" data-en="A two-module pipeline that removes gender bias from the hiring process end-to-end. The Job Offer module detects masculine-coded language in real time, scores neutrality out of 100 and generates a gender-neutral rewrite. The Applications module anonymises CVs at two levels — surface (names, pronouns) and full (gendered style words) — enabling truly blind shortlisting. Powered by a fine-tuned SLM (&lt;1B parameters) on HuggingFace, respecting EU AI Act guidelines." data-fr="Un pipeline en deux modules qui élimine les biais de genre de bout en bout dans le processus de recrutement. Le module Offre d'emploi détecte en temps réel les termes à connotation masculine, score la neutralité sur 100 et génère une réécriture neutre. Le module Candidatures anonymise les CVs à deux niveaux — surface (noms, pronoms) et complet (mots genrés) — permettant un présélection véritablement aveugle. Alimenté par un SLM (&lt;1B paramètres) sur HuggingFace, conforme à l'AI Act européen.">A two-module pipeline that removes gender bias from the hiring process end-to-end. The Job Offer module detects masculine-coded language in real time, scores neutrality out of 100 and generates a gender-neutral rewrite. The Applications module anonymises CVs at two levels — surface (names, pronouns) and full (gendered style words) — enabling truly blind shortlisting. Powered by a fine-tuned SLM (&lt;1B parameters) on HuggingFace, respecting EU AI Act guidelines.</p>
+          <div class="project-stack">
+            <span class="stack-tag">SLM &lt;1B params</span>
+            <span class="stack-tag">HuggingFace</span>
+            <span class="stack-tag">EU AI Act</span>
+            <span class="stack-tag">NLP</span>
+            <span class="stack-tag" data-en="Real-time scoring" data-fr="Score en temps réel">Real-time scoring</span>
+            <span class="stack-tag" data-en="Anonymisation pipeline" data-fr="Pipeline d'anonymisation">Anonymisation pipeline</span>
+          </div>
+          <div class="project-highlights">
+            <div class="highlight-item"><span class="highlight-value">2</span><span class="highlight-label" data-en="Intervention modules" data-fr="Modules d'intervention">Intervention modules</span></div>
+            <div class="highlight-item"><span class="highlight-value">SLM</span><span class="highlight-label" data-en="Local inference, privacy-first" data-fr="Inférence locale, vie privée préservée">Local inference, privacy-first</span></div>
+            <div class="highlight-item"><span class="highlight-value">100</span><span class="highlight-label" data-en="Neutrality score scale" data-fr="Échelle du score de neutralité">Neutrality score scale</span></div>
+            <div class="highlight-item"><span class="highlight-value">Live</span><span class="highlight-label">nubias.vercel.app</span></div>
+          </div>
+          <a href="https://nubias.vercel.app" target="_blank" class="project-link" data-en="Open live demo →" data-fr="Ouvrir la démo →">Open live demo <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- AI PANEL -->
+      <div class="project-card featured">
+        <div class="project-screens">
+          <div class="screen" style="width:50%;height:240px;">
+            <img src="images/PanelAgents/Capture d'écran 2026-03-14 150107.png" alt="AI Panel homepage">
+          </div>
+          <div class="screen" style="width:27%;height:210px;">
+            <img src="images/PanelAgents/Capture d'écran 2026-03-14 150126.png" alt="AI Panel configure">
+          </div>
+          <div class="screen" style="width:27%;height:185px;">
+            <img src="images/PanelAgents/Capture d'écran 2026-03-14 150324.png" alt="AI Panel agents">
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-type" data-en="Agentic AI system" data-fr="Système IA agentique">Agentic AI system</span>
+            <span class="project-badge badge-hackathon" data-en="Hackathon KEDGE 2026" data-fr="Hackathon KEDGE 2026">Hackathon KEDGE 2026</span>
+          </div>
+          <h3 class="project-title" data-en="AI Marketing Panel — Synthetic survey generation" data-fr="AI Marketing Panel — Génération synthétique d'enquêtes">AI Marketing Panel — Synthetic survey generation</h3>
+          <p class="project-desc" data-en="Built for BNP Paribas Personal Finance at KEDGE Hackathon 2026. A 6-agent pipeline on Azure AI Foundry (GPT-4o) that generates realistic synthetic survey respondents from real customer segmentation data (35K EFF data points, Banco de España). Upload a questionnaire, select customer clusters, and receive a fully analysis-ready Excel file with built-in quality evaluation — in under 6 minutes for 100 respondents." data-fr="Développé pour BNP Paribas Personal Finance lors du Hackathon KEDGE 2026. Un pipeline de 6 agents sur Azure AI Foundry (GPT-4o) qui génère des répondants synthétiques réalistes à partir de données réelles de segmentation client (35K points EFF, Banco de España). Uploadez un questionnaire, sélectionnez les segments, et obtenez un fichier Excel prêt à analyser avec évaluation qualité intégrée — en moins de 6 minutes pour 100 répondants.">Built for BNP Paribas Personal Finance at KEDGE Hackathon 2026. A 6-agent pipeline on Azure AI Foundry (GPT-4o) that generates realistic synthetic survey respondents from real customer segmentation data (35K EFF data points, Banco de España). Upload a questionnaire, select customer clusters, and receive a fully analysis-ready Excel file with built-in quality evaluation — in under 6 minutes for 100 respondents.</p>
+          <div class="project-stack">
+            <span class="stack-tag">Azure AI Foundry</span>
+            <span class="stack-tag">GPT-4o</span>
+            <span class="stack-tag" data-en="Multi-agent pipeline" data-fr="Pipeline multi-agents">Multi-agent pipeline</span>
+            <span class="stack-tag" data-en="Synthetic data" data-fr="Données synthétiques">Synthetic data</span>
+            <span class="stack-tag" data-en="Customer segmentation" data-fr="Segmentation client">Customer segmentation</span>
+            <span class="stack-tag" data-en="Survey design" data-fr="Conception d'enquête">Survey design</span>
+          </div>
+          <div class="project-highlights">
+            <div class="highlight-item"><span class="highlight-value">6</span><span class="highlight-label" data-en="AI agents in pipeline" data-fr="Agents IA en pipeline">AI agents in pipeline</span></div>
+            <div class="highlight-item"><span class="highlight-value">35K</span><span class="highlight-label" data-en="Real EFF data points" data-fr="Points EFF réels">Real EFF data points</span></div>
+            <div class="highlight-item"><span class="highlight-value">6</span><span class="highlight-label" data-en="Customer segments" data-fr="Segments clients">Customer segments</span></div>
+            <div class="highlight-item"><span class="highlight-value">&lt;6min</span><span class="highlight-label" data-en="For 100 respondents" data-fr="Pour 100 répondants">For 100 respondents</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- POWER BI -->
+<section id="powerbi">
+  <div class="container">
+    <p class="section-label" data-en="Data visualisation" data-fr="Visualisation de données">Data visualisation</p>
+    <h2 class="section-title" data-en="Power BI dashboards<br>in production" data-fr="Dashboards Power BI<br>en production">Power BI dashboards<br>in production</h2>
+    <p class="pbi-intro" data-en="Interactive dashboards built for real business use — market intelligence at SES and operational monitoring at Valemo. Click any dashboard to view it full size." data-fr="Dashboards interactifs construits pour un usage métier réel — intelligence de marché chez SES et monitoring opérationnel chez Valemo. Cliquez pour agrandir.">Interactive dashboards built for real business use — market intelligence at SES and operational monitoring at Valemo. Click any dashboard to view it full size.</p>
+
+    <!-- SES -->
+    <div class="pbi-section">
+      <div class="pbi-company-header">
+        <span class="pbi-company-name">SES — Société Européenne des Satellites</span>
+        <span class="pbi-company-role" data-en="Market Intelligence & Strategy · Luxembourg · 2024" data-fr="Stratégie & Intelligence de Marché · Luxembourg · 2024">Market Intelligence & Strategy · Luxembourg · 2024</span>
+      </div>
+      <div class="pbi-gallery" id="ses-gallery">
+        <div class="pbi-thumb" onclick="openLightbox('images/SES/Capture d\'écran 2026-05-05 163511.png')">
+          <img src="images/SES/Capture d'écran 2026-05-05 163511.png" alt="Mining Market Overview">
+          <p class="pbi-caption" data-en="Mining Market Overview — global mine mapping by commodity & operator" data-fr="Mining Market Overview — cartographie mondiale des mines par matière & opérateur">Mining Market Overview — global mine mapping by commodity & operator</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/SES/Capture d\'écran 2026-05-05 163524.png')">
+          <img src="images/SES/Capture d'écran 2026-05-05 163524.png" alt="Oil & Gas Market Overview">
+          <p class="pbi-caption" data-en="Oil & Gas Market Overview — offshore platform tracking with drill-down tooltips" data-fr="Oil & Gas Market Overview — suivi des plateformes offshore avec tooltips interactifs">Oil & Gas Market Overview — offshore platform tracking with drill-down tooltips</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/SES/Capture d\'écran 2026-05-05 163539.png')">
+          <img src="images/SES/Capture d'écran 2026-05-05 163539.png" alt="Country Profile">
+          <p class="pbi-caption" data-en="Country Profile — mobile & fixed broadband KPIs with choropleth world map" data-fr="Country Profile — KPIs mobile & haut débit fixe avec carte choroplèthe mondiale">Country Profile — mobile & fixed broadband KPIs with choropleth world map</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/SES/Capture d\'écran 2026-05-05 163550.png')">
+          <img src="images/SES/Capture d'écran 2026-05-05 163550.png" alt="Mobile Data">
+          <p class="pbi-caption" data-en="Mobile Data — subscription trends, revenue & technology evolution by country" data-fr="Mobile Data — tendances abonnements, revenus & évolution technologique par pays">Mobile Data — subscription trends, revenue & technology evolution by country</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/SES/Capture d\'écran 2026-05-05 163558.png')">
+          <img src="images/SES/Capture d'écran 2026-05-05 163558.png" alt="Fixed Data">
+          <p class="pbi-caption" data-en="Fixed Data — fixed broadband subscriptions by operator, technology & ARPU" data-fr="Fixed Data — abonnements haut débit fixe par opérateur, technologie & ARPU">Fixed Data — fixed broadband subscriptions by operator, technology & ARPU</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- VALEMO -->
+    <div class="pbi-section">
+      <div class="pbi-company-header">
+        <span class="pbi-company-name">Valemo</span>
+        <span class="pbi-company-role" data-en="Power BI Developer · Bègles, France · 2025" data-fr="Développeuse Power BI · Bègles, France · 2025">Power BI Developer · Bègles, France · 2025</span>
+      </div>
+      <div class="pbi-gallery" id="valemo-gallery">
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 164146.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 164146.png" alt="Asset Dashboard 2025">
+          <p class="pbi-caption" data-en="Asset Dashboard 2025 — executive view: production GWh, revenue & availability across FR/FI/GR" data-fr="Asset Dashboard 2025 — vue direction : production GWh, CA & disponibilité FR/FI/GR">Asset Dashboard 2025 — executive view: production GWh, revenue & availability across FR/FI/GR</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 164049.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 164049.png" alt="Gestion d'Actifs Production">
+          <p class="pbi-caption" data-en="Asset Management — daily production vs budget with geospatial site map" data-fr="Gestion d'actifs — production journalière vs budget avec carte des sites">Asset Management — daily production vs budget with geospatial site map</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 163848.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 163848.png" alt="Production monitoring">
+          <p class="pbi-caption" data-en="Production monitoring — multi-site time series with KPI indicators" data-fr="Monitoring production — séries temporelles multi-sites avec indicateurs KPI">Production monitoring — multi-site time series with KPI indicators</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 163926.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 163926.png" alt="Synthèse arrêts">
+          <p class="pbi-caption" data-en="Downtime analysis — breakdown by family, duration & energy losses (MWh)" data-fr="Synthèse arrêts — analyse par famille, durée & pertes énergétiques (MWh)">Downtime analysis — breakdown by family, duration & energy losses (MWh)</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 163939.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 163939.png" alt="Bandeau reactive power">
+          <p class="pbi-caption" data-en="Bandeau — reactive vs active power scatter with contractual compliance tracking" data-fr="Bandeau — nuage puissance réactive/active avec suivi conformité contractuelle">Bandeau — reactive vs active power scatter with contractual compliance tracking</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 164007.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 164007.png" alt="Solar park map">
+          <p class="pbi-caption" data-en="Solar farm mapping — satellite overlay with theoretical vs actual power output" data-fr="Carte parc solaire — superposition satellite avec puissance théorique vs réelle">Solar farm mapping — satellite overlay with theoretical vs actual power output</p>
+        </div>
+        <div class="pbi-thumb" onclick="openLightbox('images/Valemo/Capture d\'écran 2026-05-05 164232.png')">
+          <img src="images/Valemo/Capture d'écran 2026-05-05 164232.png" alt="Valemo dashboard 7">
+          <p class="pbi-caption" data-en="Operational monitoring dashboard" data-fr="Dashboard de monitoring opérationnel">Operational monitoring dashboard</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ABOUT -->
+<section style="background:var(--frost);" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label" data-en="About" data-fr="À propos">About</p>
+        <p class="about-lead" data-en="I combine market strategy thinking with hands-on data and AI skills — a profile built deliberately for the space sector." data-fr="Je combine la réflexion stratégique de marché avec des compétences data et IA concrètes — un profil construit délibérément pour le secteur spatial.">I combine market strategy thinking with hands-on data and AI skills — a profile built deliberately for the space sector.</p>
+        <p class="about-body" data-en="My path through KEDGE Business School, the University of Ottawa, SES Luxembourg and Valemo was designed around one goal: building the rare hybrid of business intelligence and technical capability that modern space companies need.<br><br>My MSc thesis examines AI and competitiveness in the space industry using open data — the same questions that define the market landscape I want to work in." data-fr="Mon parcours à KEDGE Business School, l'Université d'Ottawa, SES Luxembourg et Valemo a été conçu autour d'un objectif : développer le rare profil hybride d'intelligence business et de compétences techniques dont les entreprises spatiales modernes ont besoin.<br><br>Mon mémoire de Master examine l'IA et la compétitivité dans l'industrie spatiale à partir de données ouvertes — les mêmes questions qui définissent le paysage de marché dans lequel je veux travailler.">My path through KEDGE Business School, the University of Ottawa, SES Luxembourg and Valemo was designed around one goal: building the rare hybrid of business intelligence and technical capability that modern space companies need.<br><br>My MSc thesis examines AI and competitiveness in the space industry using open data — the same questions that define the market landscape I want to work in.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-cell"><p class="stat-num">2</p><p class="stat-desc" data-en="Masters degrees — International Business & Data Analytics" data-fr="Masters — Commerce International & Data Analytics">Masters degrees — International Business & Data Analytics</p></div>
+        <div class="stat-cell"><p class="stat-num">2.5</p><p class="stat-desc" data-en="Years studying and working abroad (Canada, Luxembourg)" data-fr="Années d'études et de travail à l'étranger (Canada, Luxembourg)">Years studying and working abroad (Canada, Luxembourg)</p></div>
+        <div class="stat-cell"><p class="stat-num">C1</p><p class="stat-desc" data-en="English — IELTS certified, bilingual professional" data-fr="Anglais — Certifié IELTS, bilingue professionnel">English — IELTS certified, bilingual professional</p></div>
+        <div class="stat-cell"><p class="stat-num">PSM1</p><p class="stat-desc" data-en="Scrum Master certified — Agile methodology" data-fr="Scrum Master certifié — Méthodologie Agile">Scrum Master certified — Agile methodology</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section class="contact-bg" id="contact">
+  <div class="container">
+    <p class="section-label" data-en="Contact" data-fr="Contact">Contact</p>
+    <h2 class="section-title" style="margin-bottom:40px;" data-en="Let's talk." data-fr="Parlons-en.">Let's talk.</h2>
+    <div class="contact-row">
+      <a href="mailto:katelleallin@gmail.com" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        katelleallin@gmail.com
+      </a>
+      <a href="https://www.linkedin.com/in/katelle-allin" target="_blank" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        linkedin.com/in/katelle-allin
+      </a>
+      <a href="https://nubias.vercel.app" target="_blank" class="contact-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
+        nubias.vercel.app
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Katelle Allin — Data & Market Analyst</p>
+  <p>Portfolio 2026</p>
+</footer>
+
+<script>
+  // ── LANGUAGE TOGGLE ──────────────────────────────────────────
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const text = el.getAttribute('data-' + lang);
+      if (text) {
+        if (el.tagName === 'H2' || el.tagName === 'P' || el.tagName === 'A') {
+          el.innerHTML = text;
+        } else {
+          el.textContent = text;
+        }
+      }
+    });
+  }
+
+  // ── LIGHTBOX ──────────────────────────────────────────────────
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // ── SCROLL: switch lang toggle colors ────────────────────────
+  const hero = document.querySelector('.hero');
+  const observer = new IntersectionObserver(entries => {
+    document.body.classList.toggle('light-nav', !entries[0].isIntersecting);
+  }, { threshold: 0.1 });
+  observer.observe(hero);
+</script>
+</body>
+</html>
