@@ -185,6 +185,67 @@
   .project-link .arrow { transition: transform 0.15s; }
   .project-link:hover .arrow { transform: translateX(4px); }
 
+  /* CAROUSEL */
+  .carousel {
+    position: relative;
+    background: var(--navy);
+    height: 320px;
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.4s ease;
+  }
+  .carousel-slide {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+  }
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    z-index: 10;
+    line-height: 1;
+  }
+  .carousel-btn:hover { background: rgba(255,255,255,0.3); }
+  .carousel-btn.prev { left: 14px; }
+  .carousel-btn.next { right: 14px; }
+  .carousel-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 6px;
+  }
+  .carousel-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    padding: 0;
+  }
+  .carousel-dot.active { background: white; transform: scale(1.3); }
+
   /* POWER BI */
   .pbi-intro { font-size: 15px; color: var(--muted); max-width: 600px; line-height: 1.8; margin-bottom: 56px; margin-top: -36px; }
   .pbi-section { margin-bottom: 60px; }
@@ -334,16 +395,19 @@
 
       <!-- NUBIAS -->
       <div class="project-card featured">
-        <div class="project-screens">
-          <div class="screen" style="width:52%;height:240px;">
-            <img src="images/Nubias/Capture d'écran 2026-04-02 183536.png" alt="Nubias homepage">
+        <div class="carousel" id="carousel-nubias">
+          <div class="carousel-track" id="track-nubias">
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 193216.png" alt="Nubias landing page"></div>
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 183536.png" alt="Nubias dashboard"></div>
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 183505.png" alt="Nubias dashboard KEDGE"></div>
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 183816.png" alt="Nubias bias analysis"></div>
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 183848.png" alt="Nubias modules"></div>
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 183858.png" alt="Nubias CVs"></div>
+            <div class="carousel-slide"><img src="images/Nubias/Capture d'écran 2026-04-02 183903.png" alt="Nubias scoring"></div>
           </div>
-          <div class="screen" style="width:26%;height:210px;">
-            <img src="images/Nubias/Capture d'écran 2026-04-02 183816.png" alt="Nubias bias analysis">
-          </div>
-          <div class="screen" style="width:26%;height:185px;">
-            <img src="images/Nubias/Capture d'écran 2026-04-02 183848.png" alt="Nubias modules">
-          </div>
+          <button class="carousel-btn prev" onclick="moveCarousel('nubias', -1)">&#8249;</button>
+          <button class="carousel-btn next" onclick="moveCarousel('nubias', 1)">&#8250;</button>
+          <div class="carousel-dots" id="dots-nubias"></div>
         </div>
         <div class="project-body">
           <div class="project-meta">
@@ -372,16 +436,15 @@
 
       <!-- AI PANEL -->
       <div class="project-card featured">
-        <div class="project-screens">
-          <div class="screen" style="width:50%;height:240px;">
-            <img src="images/PanelAgents/Capture d'écran 2026-03-14 150107.png" alt="AI Panel homepage">
+        <div class="carousel" id="carousel-panel">
+          <div class="carousel-track" id="track-panel">
+            <div class="carousel-slide"><img src="images/PanelAgents/Capture d'écran 2026-03-14 150107.png" alt="AI Panel homepage"></div>
+            <div class="carousel-slide"><img src="images/PanelAgents/Capture d'écran 2026-03-14 150126.png" alt="AI Panel configure"></div>
+            <div class="carousel-slide"><img src="images/PanelAgents/Capture d'écran 2026-03-14 150324.png" alt="AI Panel agents"></div>
           </div>
-          <div class="screen" style="width:27%;height:210px;">
-            <img src="images/PanelAgents/Capture d'écran 2026-03-14 150126.png" alt="AI Panel configure">
-          </div>
-          <div class="screen" style="width:27%;height:185px;">
-            <img src="images/PanelAgents/Capture d'écran 2026-03-14 150324.png" alt="AI Panel agents">
-          </div>
+          <button class="carousel-btn prev" onclick="moveCarousel('panel', -1)">&#8249;</button>
+          <button class="carousel-btn next" onclick="moveCarousel('panel', 1)">&#8250;</button>
+          <div class="carousel-dots" id="dots-panel"></div>
         </div>
         <div class="project-body">
           <div class="project-meta">
@@ -538,6 +601,38 @@
 </footer>
 
 <script>
+  // ── CAROUSELS ─────────────────────────────────────────────────
+  const carousels = {};
+
+  function initCarousel(id, count) {
+    carousels[id] = { current: 0, count };
+    const dotsEl = document.getElementById('dots-' + id);
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      dot.onclick = () => goToSlide(id, i);
+      dotsEl.appendChild(dot);
+    }
+  }
+
+  function goToSlide(id, index) {
+    const c = carousels[id];
+    c.current = index;
+    document.getElementById('track-' + id).style.transform = `translateX(-${index * 100}%)`;
+    document.querySelectorAll('#dots-' + id + ' .carousel-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+    });
+  }
+
+  function moveCarousel(id, dir) {
+    const c = carousels[id];
+    goToSlide(id, (c.current + dir + c.count) % c.count);
+  }
+
+  initCarousel('nubias', 7);
+  initCarousel('panel', 3);
+
   // ── LANGUAGE TOGGLE ──────────────────────────────────────────
   let currentLang = 'en';
 
